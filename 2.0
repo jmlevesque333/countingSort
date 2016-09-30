@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+
+using namespace std;
+
+class pair1
+{
+public:
+	int num;
+	string str;
+	pair1(){}
+
+	pair1(int a, string b)
+	{
+		num = a;
+		str = b;
+	}
+
+};
+
+int main(){
+	int howMany = 0;
+	int num = 0;
+	string str;
+	unordered_map<int, int> mp;
+	cin >> howMany;
+	vector <pair1> arr(howMany, pair1());
+	
+	for(int i =0; i<  howMany; i++){
+		cin >> num >> str;
+		arr[i].num = num;
+		if(i < howMany/2)
+			arr[i].str = "-";
+		else
+			arr[i].str = str;
+		}
+	for(int i = 0; i < howMany; i++){
+		if(mp.find(arr[i].num) != mp.end()){
+			mp[arr[i].num] = mp[arr[i].num]+1;
+		}
+		else{
+			mp[arr[i].num] = 1;
+		}
+	}
+	vector <int> count(mp.size(), 0);
+	for(int i =0; i < count.size(); i++){
+		count[i] = mp[i];
+		}
+	for(int i = 0; i < count.size(); i++){
+		if(i == 0)
+			continue;
+		count[i] = count[i-1] + count[i];
+		}
+	vector <string> finales(howMany+1);
+	for(int i =howMany; i> 0; i--){
+		pair1 x = arr[i-1];
+		int y = count[x.num];
+		count[x.num]--;
+		finales[y] = x.str;
+	}
+	for(int i =0; i<howMany; i++){
+		cout << finales[i+1] << " ";
+	}
+	return 0;
+}
